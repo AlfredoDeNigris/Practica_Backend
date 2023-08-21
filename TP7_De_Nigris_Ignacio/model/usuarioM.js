@@ -124,54 +124,5 @@ usuario_db.getByEmail = function (mail, funCallback) { //GET BY EMAIL
     }
 };
 
-function errorU(callback, err, result) {
-    console.log("Error object:", err);
-    if (err) {
-        if (err.code === "ER_NO_REFERENCED_ROW_2") {
-            callback({
-                status: 400,
-                mensaje: "El dni ingresado no corresponde a ninguna persona en la base de datos",
-                detail: err
-            });
-        } else if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes("PRIMARY")) {
-            callback({
-                status: 400,
-                mensaje: "El mail ingresado ya esta en uso",
-                detail: err
-            });
-        } else if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes("unique_persona")) {
-            callback({
-                status: 400,
-                mensaje: "La persona seleccionada ya dispone de un usuario",
-                detail: err
-            });
-        } else if ((err.code === "INVALID_DATA_TYPE") || (err.code === "ER_BAD_FIELD_ERROR")) {
-            callback({
-                status: 400,
-                mensaje: "El tipo de dato ingresado no es correcto",
-                detail: err
-            });
-        } else {
-            callback({
-                status: 500,
-                mensaje: "Error desconocido 1",
-                detail: err
-            });
-        }
-    } else if ((result && result.affectedRows === 0) || (result && result.length === 0)) {
-        callback({
-            status: 400,
-            mensaje: "No hay ningun usuario registrado con el criterio de busqueda ingresado",
-            detail: err
-        });
-    } else {
-        callback({
-            status: 500,
-            mensaje: "Error desconocido 2",
-            detail: err
-        });
-    }
-}
-
 
 module.exports = usuario_db;
