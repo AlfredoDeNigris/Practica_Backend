@@ -149,53 +149,5 @@ persona_db.getUserByNickname = function (dni, funCallback) {
     }
 };
 
-function errorP(callback, err, result, dni) {
-    if (err) {
-        if (err.code === "ER_DUP_ENTRY") {
-            callback({
-                status: 400,
-                mensaje: "Ya hay una persona registrada con ese dni",
-                detail: err
-            });
-        } else if (err.code === "ER_ROW_IS_REFERENCED_2") {
-            callback({
-                status: 400,
-                mensaje: "No se puede eliminar la persona, debido a que poseé una cuenta de usuario activa.",
-                detail: err
-            });
-        } else if ((err.code === "INVALID_DATA_TYPE") || (err.code === "ER_BAD_FIELD_ERROR")) {
-            callback({
-                status: 400,
-                mensaje: "El tipo de dato ingresado no es correcto",
-                detail: err
-            });
-        } else {
-            callback({
-                status: 500,
-                mensaje: "Error desconocido 1",
-                detail: err
-            });
-        }
-    } else if ((result && result.affectedRows === 0) || (result && result.length == 0)) {
-        callback({
-            status: 400,
-            mensaje: "No hay ninguna persona registrada con el criterio de busqueda ingresado",
-            detail: err
-        });
-    } else if (!result[0].nickname) {
-        callback({
-            status: 400,
-            mensaje: `La persona con el dni ${dni} no posee un usuario registrado en la base de datos.`,
-            detail: err
-        });
-    } else {
-        callback({
-            status: 500,
-            mensaje: "Error desconocido 2",
-            detail: err
-        });
-    }
-}
-
 
 module.exports = persona_db;
