@@ -10,7 +10,6 @@ function validar(params, expectedTypes) {
 }
 
 function errorGlobal(callback, err, result, entityType, id) {
-    console.log("Error object:", err);
     if (err) {
         if (err.code === "ER_DUP_ENTRY") {
             callback({
