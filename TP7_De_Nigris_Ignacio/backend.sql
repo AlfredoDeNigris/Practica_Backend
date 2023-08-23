@@ -1,4 +1,5 @@
 CREATE SCHEMA backend;
+USE backend;
 
 CREATE TABLE persona (
     dni INT PRIMARY KEY,
