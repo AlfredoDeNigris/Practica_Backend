@@ -9,36 +9,30 @@ function validar(params, expectedTypes) {
     }
 }
 
-function errorGlobal(callback, err, result, entityType, id) {
+function errorGlobal(callback, err, result, entidad, id) {
     if (err) {
-        if (err.code === "ER_DUP_ENTRY") {
+        if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes('unique_persona')) {
             callback({
-                status: 400,
-                mensaje: `Ya hay una ${entityType} registrad@ con ese ${id}`,
+                status: 409,
+                mensaje: "La persona seleccionada ya dispone de un usuario",
                 detail: err
             });
-        } else if (err.code === "ER_NO_REFERENCED_ROW_2" && entityType === "usuario") {
+        }else if (err.code === "ER_DUP_ENTRY") {
                 callback({
-                    status: 400,
+                    status: 409,
+                    mensaje: `Ya hay una ${entidad} registrad@ con ese ${id}`,
+                    detail: err
+                });
+        } else if (err.code === "ER_NO_REFERENCED_ROW_2" && entidad === "usuario") {
+                callback({
+                    status: 422,
                     mensaje: "El dni ingresado no corresponde a ninguna persona en la base de datos",
                     detail: err
                 });
         } else if (err.code === "ER_ROW_IS_REFERENCED_2") {
             callback({
-                status: 400,
+                status: 409,
                 mensaje: `No se puede eliminar esta persona, debido a que poseé una cuenta de usuario activa.`,
-                detail: err
-            });
-        } else if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes("PRIMARY")) {
-            callback({
-                status: 400,
-                mensaje: "El mail ingresado ya esta en uso",
-                detail: err
-            });
-        } else if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes("unique_persona")) {
-            callback({
-                status: 400,
-                mensaje: "La persona seleccionada ya dispone de un usuario",
                 detail: err
             });
         } else if ((err.code === "INVALID_DATA_TYPE") || (err.code === "ER_BAD_FIELD_ERROR")) {
@@ -56,14 +50,14 @@ function errorGlobal(callback, err, result, entityType, id) {
         }
     } else if ((result && result.affectedRows === 0) || (result && result.length === 0)) {
         callback({
-            status: 400,
-            mensaje: `No existé ${entityType} registrad@ con el criterio de búsqueda ingresado`,
+            status: 404,
+            mensaje: `No existé ${entidad} registrad@ con el criterio de búsqueda ingresado`,
             detail: err
         });
-    } else if (entityType === "persona" && !result[0].nickname) {
+    } else if (entidad === "persona" && !result[0].nickname) {
         callback({
-            status: 400,
-            mensaje: `La persona con el ${id} no posee un usuario registrado en la base de datos.`,
+            status: 422,
+            mensaje: `La persona no posee un usuario registrado en la base de datos.`,
             detail: err
         });
     } else {
