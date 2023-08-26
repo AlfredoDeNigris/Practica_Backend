@@ -25,7 +25,7 @@ persona_db.getAll = function (funCallback) { //GET
                 funCallback(undefined, rows);
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
@@ -49,7 +49,7 @@ persona_db.create = function (persona, funCallback) { //POST
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
@@ -73,7 +73,7 @@ persona_db.update = function (dni, persona, funCallback) { //PUT
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
@@ -97,12 +97,12 @@ persona_db.delete = function (dni, funCallback) { // DELETE
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
-}
+};
 
-persona_db.getByApellido = function (apellido, funCallback) { //GET By APELLIDO
+persona_db.getByApellido = function (apellido, funCallback) { //GET By Apellido
     try {
         const expectedTypes = ['string'];
         let params = [apellido];
@@ -120,12 +120,12 @@ persona_db.getByApellido = function (apellido, funCallback) { //GET By APELLIDO
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
 
-persona_db.getUserByNickname = function (dni, funCallback) {
+persona_db.getUserByNickname = function (dni, funCallback) { //GET By Nickname
     try {
         const dniAsNumber = parseInt(dni); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde buscará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['number'];
@@ -144,7 +144,7 @@ persona_db.getUserByNickname = function (dni, funCallback) {
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
