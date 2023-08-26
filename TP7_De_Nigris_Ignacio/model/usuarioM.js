@@ -26,7 +26,7 @@ usuario_db.getAll = function (funCallback) { //GET
                 funCallback(undefined, rows);
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "usuario", "mail");
     }
 };
@@ -50,7 +50,7 @@ usuario_db.create = function (usuario, funCallback) { //POST
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "usuario", "mail");
     }
 };
@@ -73,7 +73,7 @@ usuario_db.update = function (mail, usuario, funCallback) { //PUT
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "usuario", "mail");
     }
 };
@@ -96,7 +96,7 @@ usuario_db.delete = function (mail, funCallback) { //DELETE
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "usuario", "mail");
     }
 };
@@ -119,7 +119,7 @@ usuario_db.getByEmail = function (mail, funCallback) { //GET BY EMAIL
                 });
             }
         });
-    } catch (error) {
+    } catch (err) {
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "usuario", "mail");
     }
 };
