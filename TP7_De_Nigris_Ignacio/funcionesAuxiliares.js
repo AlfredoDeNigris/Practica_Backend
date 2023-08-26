@@ -11,7 +11,6 @@ function validar(params, expectedTypes) {
 
 
 function errorGlobal(callback, err, result, entidad, id) {
-    console.log("Error object:", err);
     if (err) {
         if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes('unique_persona')) {
             callback({
