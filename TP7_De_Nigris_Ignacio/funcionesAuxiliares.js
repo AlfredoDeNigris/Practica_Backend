@@ -4,12 +4,14 @@ function validar(params, expectedTypes) {
         const actualType = typeof params[i];
         
         if (expectedType !== actualType) {
-            throw new Error("INVALID_DATA_TYPE");
+            throw { code: "INVALID_DATA_TYPE" };
         }
     }
 }
 
+
 function errorGlobal(callback, err, result, entidad, id) {
+    console.log("Error object:", err);
     if (err) {
         if (err.code === "ER_DUP_ENTRY" && err.sqlMessage.includes('unique_persona')) {
             callback({
@@ -67,7 +69,7 @@ function errorGlobal(callback, err, result, entidad, id) {
             detail: err
         });
     }
-}
+};
 
 
 module.exports = {
