@@ -2,13 +2,20 @@ function validar(params, expectedTypes) {
     for (let i = 0; i < params.length; i++) {
         const expectedType = expectedTypes[i];
         const actualType = typeof params[i];
-        
-        if (expectedType !== actualType) {
+
+        if (expectedType === 'number') {
+            const inputStr = params[i].toString();
+            for (let j = 0; j < inputStr.length; j++) {
+                if (isNaN(inputStr[j])) {
+                    throw { code: "INVALID_DATA_TYPE" };
+                }
+            }
+            params[i] = parseInt(params[i]);
+        } else if (expectedType !== actualType) {
             throw { code: "INVALID_DATA_TYPE" };
         }
     }
-}
-
+};
 
 function errorGlobal(callback, err, result, entidad, id) {
     if (err) {
