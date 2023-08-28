@@ -32,9 +32,8 @@ persona_db.getAll = function (funCallback) { //GET
 
 persona_db.create = function (persona, funCallback) { //POST
     try {
-        const dniAsNumber = parseInt(persona.dni); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde creará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['number', 'string', 'string'];
-        let params = [dniAsNumber, persona.nombre, persona.apellido];
+        let params = [persona.dni, persona.nombre, persona.apellido];
         funcionesAuxiliares.validar(params, expectedTypes);
 
         let consulta = 'INSERT INTO persona (dni, nombre, apellido) VALUES (?,?,?)';
@@ -56,9 +55,8 @@ persona_db.create = function (persona, funCallback) { //POST
 
 persona_db.update = function (dni, persona, funCallback) { //PUT
     try {
-        const dniAsNumber = parseInt(persona.dni); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde actualizará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['number', 'string', 'string', 'number'];
-        let params = [dniAsNumber, persona.nombre, persona.apellido, dniAsNumber];
+        let params = [persona.dni, persona.nombre, persona.apellido, dni];
         funcionesAuxiliares.validar(params, expectedTypes);
 
         let consulta = 'UPDATE persona SET dni = ?, nombre = ?, apellido = ? WHERE dni = ?';
@@ -80,9 +78,8 @@ persona_db.update = function (dni, persona, funCallback) { //PUT
 
 persona_db.delete = function (dni, funCallback) { // DELETE
     try {
-        const dniAsNumber = parseInt(dni); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde eliminará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['number'];
-        let params = [dniAsNumber];
+        let params = [dni];
         funcionesAuxiliares.validar(params, expectedTypes);
 
         let consulta = "DELETE FROM persona WHERE dni = ?";
@@ -92,12 +89,13 @@ persona_db.delete = function (dni, funCallback) { // DELETE
                 funcionesAuxiliares.errorGlobal(funCallback, err, result, "persona", "dni");
             } else {
                 funCallback(undefined, {
-                    mensaje: `La persona con el dni ${dniAsNumber} fue eliminada correctamente`,
+                    mensaje: `La persona con el dni ${dni} fue eliminada correctamente`,
                     detalle: result
                 });
             }
         });
     } catch (err) {
+        console.log("Entró al catch");
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
@@ -127,9 +125,8 @@ persona_db.getByApellido = function (apellido, funCallback) { //GET By Apellido
 
 persona_db.getUserByNickname = function (dni, funCallback) { //GET By Nickname
     try {
-        const dniAsNumber = parseInt(dni); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde buscará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['number'];
-        let params = [dniAsNumber];
+        let params = [dni];
         funcionesAuxiliares.validar(params, expectedTypes);
 
         let consulta = `SELECT p.*, u.nickname FROM persona p LEFT JOIN usuario u ON p.dni = u.persona WHERE p.dni = ?`;
