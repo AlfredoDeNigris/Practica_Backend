@@ -5,7 +5,6 @@ const mysql = require('mysql');
 const configuracion = require("config.json");
 const funcionesAuxiliares = require("../funcionesAuxiliares");
 
-
 //Conexión a la base de datos.
 var connection = mysql.createConnection(configuracion.database);
 connection.connect((err) => {
@@ -33,9 +32,8 @@ usuario_db.getAll = function (funCallback) { //GET
 
 usuario_db.create = function (usuario, funCallback) { //POST
     try {
-        const usuarioAsNumber = parseInt(usuario.persona); //Esta es una solución parcial, ya que acepta casos como "1jge6" donde creará la persona con dni=1, en vez de rechazar el valor.
         const expectedTypes = ['string', 'string', 'string', 'number'];
-        let params = [usuario.mail, usuario.nickname, usuario.password, usuarioAsNumber];
+        let params = [usuario.mail, usuario.nickname, usuario.password, usuario.persona];
         funcionesAuxiliares.validar(params, expectedTypes);
 
         let consulta = 'INSERT INTO usuario (mail, nickname, password, persona) VALUES (?,?,?,?)';
