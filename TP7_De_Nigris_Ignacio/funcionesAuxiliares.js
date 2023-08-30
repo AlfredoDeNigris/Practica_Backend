@@ -3,7 +3,7 @@ function validar(params, expectedTypes) {
         const expectedType = expectedTypes[i];
         const actualType = typeof params[i];
 
-        if (expectedType === 'number') {
+        if (expectedType === 'number') { //Para evitar un comportamiento no deseado, agregué esta estructura de control, que verifica que el input consista exclusivamente por caracteres numéricos.
             const inputStr = params[i].toString();
             for (let j = 0; j < inputStr.length; j++) {
                 if (isNaN(inputStr[j])) {
