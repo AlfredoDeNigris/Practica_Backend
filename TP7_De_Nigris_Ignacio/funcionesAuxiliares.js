@@ -7,12 +7,18 @@ function validar(params, expectedTypes) {
             const inputStr = params[i].toString();
             for (let j = 0; j < inputStr.length; j++) {
                 if (isNaN(inputStr[j])) {
-                    throw { code: "INVALID_DATA_TYPE" };
+                    throw {
+                        message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType}, se recibió: ${actualType}`,
+                        code: "INVALID_DATA_TYPE"
+                    };
                 }
             }
             params[i] = parseInt(params[i]);
         } else if (expectedType !== actualType) {
-            throw { code: "INVALID_DATA_TYPE" };
+            throw {
+                message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType}, se recibió: ${actualType}`,
+                code: "INVALID_DATA_TYPE"
+            };
         }
     }
 };
@@ -43,7 +49,13 @@ function errorGlobal(callback, err, result, entidad, id) {
                 mensaje: `No se puede eliminar esta persona, debido a que poseé una cuenta de usuario activa.`,
                 detail: err
             });
-        } else if ((err.code === "INVALID_DATA_TYPE") || (err.code === "ER_BAD_FIELD_ERROR")) {
+        } else if (err.code === "INVALID_DATA_TYPE") {
+            callback({
+                status: 400,
+                mensaje: err.message,
+                detail: err
+            });
+        } else if (err.code === "ER_BAD_FIELD_ERROR") {
             callback({
                 status: 400,
                 mensaje: "El tipo de dato ingresado no es correcto",
