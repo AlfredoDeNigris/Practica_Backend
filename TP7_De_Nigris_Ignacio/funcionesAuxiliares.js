@@ -8,7 +8,7 @@ function validar(params, expectedTypes) {
             for (let j = 0; j < inputStr.length; j++) {
                 if (isNaN(inputStr[j])) {
                     throw {
-                        message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType}, se recibió: ${actualType}`,
+                        message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType} pero se recibió: ${actualType}`,
                         code: "INVALID_DATA_TYPE"
                     };
                 }
@@ -16,7 +16,7 @@ function validar(params, expectedTypes) {
             params[i] = parseInt(params[i]);
         } else if (expectedType !== actualType) {
             throw {
-                message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType}, se recibió: ${actualType}`,
+                message: `El tipo de dato ingresado en la posición ${i} es incorrecto. Se esperaba: ${expectedType} pero se recibió: ${actualType}`,
                 code: "INVALID_DATA_TYPE"
             };
         }
