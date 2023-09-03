@@ -95,7 +95,6 @@ persona_db.delete = function (dni, funCallback) { // DELETE
             }
         });
     } catch (err) {
-        console.log("Entró al catch");
         funcionesAuxiliares.errorGlobal(funCallback, err, null, "persona", "dni");
     }
 };
